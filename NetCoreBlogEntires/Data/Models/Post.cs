@@ -21,10 +21,7 @@ namespace NetCoreBlogEntires.Data.Models
         public string CategoryId { get; set; }
 
 
-        public Post()
-        {
-
-        }
+     
 
 
         public Post(string title, string content,string shortContent, string categoryId, string authorName)

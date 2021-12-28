@@ -15,10 +15,6 @@ namespace NetCoreBlogEntires.Data.Repositories
 
         public Tag FindByName(string tagName)
         {
-
-            tagName.Replace(" ", "");
-            tagName = $"#{tagName.ToLower().Trim()}";
-
             // firstOrDefault bulamaz ise null döndürür.
             return _dbSet.FirstOrDefault(x => x.Name == tagName);
         }
