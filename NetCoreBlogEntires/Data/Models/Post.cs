@@ -20,10 +20,6 @@ namespace NetCoreBlogEntires.Data.Models
         public string ShortContent { get; set; }
         public string CategoryId { get; set; }
 
-
-     
-
-
         public Post(string title, string content,string shortContent, string categoryId, string authorName)
         {
             Id = Guid.NewGuid().ToString();
@@ -51,7 +47,7 @@ namespace NetCoreBlogEntires.Data.Models
             if(string.IsNullOrEmpty(author))
             {
                 // yazar ismi vermek istemezse anonim bir hesaptrı diye işaretledik.
-                author = "Anounymous";
+                AuthorName = "Anounymous";
             }
             else
             {
@@ -71,7 +67,7 @@ namespace NetCoreBlogEntires.Data.Models
                 throw new Exception("Makele içeriği boş geçilemez");
             }
 
-            this.Content = content.Trim();
+            Content = content.Trim();
         }
 
         private void SetShortContent(string shortContent)
@@ -81,7 +77,7 @@ namespace NetCoreBlogEntires.Data.Models
             //    throw new Exception("Makale için en az 200 karakterlik bir yazı giriniz");
             //}
 
-            this.ShortContent = shortContent.Trim();
+            ShortContent = shortContent.Trim();
         }
 
         private void SetTitle(string title)
@@ -91,7 +87,7 @@ namespace NetCoreBlogEntires.Data.Models
                 throw new Exception("Makale başlığını boş geçemezsiniz");
             }
 
-            this.Title = title.Trim();
+            Title = title.Trim();
         }
 
         public void AddComment(Comment comment)
@@ -131,8 +127,7 @@ namespace NetCoreBlogEntires.Data.Models
 
                 // küçük harfe çevirip trimleyim önüne # koyduk
                 // gs sampiyon => #gssampiyon
-                tag.Name = tag.Name.Replace(" ", "");
-                tag.Name = $"#{tag.Name.ToLower().Trim()}";
+               
                 _tags.Add(tag);
                 // Tag Tag tablosunda olmadığı için Hem Tag tablosuna kayıt atar hemde ara tablo olan Tag Post Tablosuna Id kaydı atar.
             }

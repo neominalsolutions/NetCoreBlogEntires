@@ -1,0 +1,107 @@
+﻿
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@model PostInputModel
+
+
+@section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" integrity="sha512-xmGTNt20S0t62wHLmQec2DauG9T+owP9e6VU8GigI0anN7OXLip9i7IwEhelasml2osdxX71XcYm6BQunTQeQg==" crossorigin="anonymous" referrerpolicy="no-referrer" />*@
+
+<link href="https://unpkg.com/@@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+}
+
+
+<form method="post">
+
+    <div asp-validation-summary="All"></div>
+
+    <div class="form-group">
+        <label for="exampleInputEmail1">Makale Başlığı</label>
+        <input asp-for="Title" type="text" class="form-control"  placeholder="Makale başlığı giriniz">
+        <span class="text-danger" asp-validation-for="Title"></span>
+        <small id="emailHelp" class="form-text text-muted">Makalenin başlık alanı. Maksimum 50 karakteri geçmeyelim!</small>
+    </div>
+
+    <div class="form-group">
+        <label for="exampleInputEmail1">Makale Kısa Yazı</label>
+        <input asp-for="ShortContent" type="text" class="form-control" placeholder="makale Yazısı giriniz">
+        <span class="text-danger" asp-validation-for="ShortContent"></span>
+        <small id="emailHelp" class="form-text text-muted">Anasayfada makalenin görüntüleneceği kısa bir açıklama yazısıdır.</small>
+    </div>
+
+
+    <div class="form-group">
+        <label for="exampleInputEmail1">Makale İçeriği</label>
+        <textarea asp-for="Content" id="editor" type="text" class="form-control" placeholder="Makale içeriği">
+</textarea>
+        <span class="text-danger" asp-validation-for="Content"></span>
+        <small class="form-text text-muted">Tüm makaleye ait yazıyı editör kullanarak oluşturabilirsiniz. Video resim gibi medya içeriklerinin yüklenemesini destekler </small>
+    </div>
+
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">Kategorisi</label>
+        <select asp-for="CategoryId" asp-items="@ViewBag.Categories" class="form-control" id="exampleFormControlSelect1">
+        </select>
+        <span class="text-danger" asp-validation-for="CategoryId"></span>
+        <small class="form-text text-muted"> Makaleye ait kategori seçimi zorunludur! </small>
+    </div>
+
+
+    <div class="form-group">
+        <label for="exampleInputEmail1">Etiketler</label>
+        <input asp-for="Tags"  type="text" class="form-control" id="tagsInput" aria-describedby="emailHelp" placeholder="Etiketler" onchange="tagsInputChange(event)">
+        <small id="emailHelp" class="form-text text-muted">Makale ile ilişkili etiketleri #ile başlayarak yazabilirsiniz.</small>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+
+</form>
+
+
+@section Scripts {
+  
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
+
+    <script>
+
+        // bu sayfa ilk açıldığında sayfa hazır olduğunda
+        $(document).ready(function () {
+
+            /*   document.getElementById("editor").summernote();*/
+
+            // id editor olan elementi yakalayıp summernote methodunu çalıştır.
+            // Jquery kütüphanesine bağlanmak için $ işareti kullanıyoruz.
+            $('#editor').summernote();
+        });
+    </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js" integrity="sha512-9UR1ynHntZdqHnwXKTaOm1s6V9fExqejKvg5XMawEMToW4sSw+3jtLrYfZPijvnwnnE8Uol1O9BcAskoxgec+g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="https://unpkg.com/@@yaireo/tagify"></script>
+<script src="https://unpkg.com/@@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+<script>
+
+
+    var inputElm = document.querySelector("#tagsInput");
+    tagify = new Tagify(inputElm, {
+        originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(','),
+        pattern: /#/
+    });
+/*    tagify.addTags(["banana", "orange", "apple"])*/
+
+    const tagsInputChange = (event) => {
+        console.log("tags",event.target.value)
+    }
+
+
+
+
+</script>
+
+}
