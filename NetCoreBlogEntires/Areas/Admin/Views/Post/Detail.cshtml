@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@model PostDetailViewModel
+
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-10">
+            <h1>  @Model.Title</h1>
+      </div>
+        <div class="col-2">
+            <span>@Model.PublishDate</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            @Html.Raw(Model.HtmlContent)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+         
+
+                @foreach (var tagName in Model.Tags)
+                {
+                    <span style="border-radius:5px; padding:2px; background-color:pink;">@tagName</span>
+                }
+     
+        </div>
+    </div>
+</div>

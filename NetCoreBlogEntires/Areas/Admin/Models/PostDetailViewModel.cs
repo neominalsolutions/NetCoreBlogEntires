@@ -5,19 +5,15 @@ using System.Threading.Tasks;
 
 namespace NetCoreBlogEntires.Areas.Admin.Models
 {
-    public class PostViewModel
+    public class PostDetailViewModel
     {
-        public string Id { get; set; }
         public string Title { get; set; }
-        public string ShortContent { get; set; }
-
-        public int CommentCount { get; set; }
-
         public string AuthorName { get; set; }
-
-        public string CategoryName { get; set; }
-
         public string PublishDate { get; set; }
+        public string CategoryName { get; set; }
+        public string HtmlContent { get; set; }
+        public List<string> Tags { get; set; }
+
 
     }
 }

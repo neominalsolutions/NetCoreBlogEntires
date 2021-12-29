@@ -22,6 +22,12 @@ namespace NetCoreBlogEntires.Data.Repositories
  
         }
 
+
+        public override List<Post> List()
+        {
+            return _dbSet.Include(x => x.Comments).Include(x => x.Category).ToList();
+        }
+
         public List<Post> GetPagedPosts(int currentPage = 1, int limit = 10)
         {
 
