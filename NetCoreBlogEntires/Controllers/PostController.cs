@@ -25,6 +25,8 @@ namespace NetCoreBlogEntires.Controllers
         public IActionResult List(string searchText, string categoryId, string tagName, int currentPage = 1)
         {
 
+            // sayfada ne kadar filtereleme varsa bu filtreler querystring üzerinden yakalanıp, viewbag olarak sayfaya geri gönderilir. ve sayfalama butonu bu son filtre değerlerine göre düzgün sayfalama yapabilir.
+
             ViewBag.CurrentPage = currentPage;
             ViewBag.SearchText = searchText;
             ViewBag.TagName = tagName;

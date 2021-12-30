@@ -28,6 +28,13 @@ namespace NetCoreBlogEntires.Data.Repositories
             return _dbSet.Include(x => x.Comments).Include(x => x.Category).ToList();
         }
 
+        /// <summary>
+        /// Gönderilen filtreye göre sayfalama yapar, filtere değerleri kategorisine göre, shortcontent title göre ve tagname göre
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <param name="currentPage"></param>
+        /// <param name="limit"></param>
+        /// <returns></returns>
         public IQueryable<Post> GetPagedPosts(Expression<Func<Post,bool>> filter, int currentPage = 1, int limit = 10)
         {
 
