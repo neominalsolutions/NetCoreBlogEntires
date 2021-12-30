@@ -58,8 +58,12 @@ namespace NetCoreBlogEntires.Data.Repositories
             _dbSet.Update(item);
         }
 
-        IQueryable<TEntity> IRepository<TEntity>.Where(Expression<Func<TEntity, bool>> lamda)
+        IQueryable<TEntity> IRepository<TEntity>.Where(Expression<Func<TEntity, bool>> lamda = null)
         {
+            if (lamda == null)
+                return _dbSet.AsQueryable();
+           
+
             return _dbSet.Where(lamda).AsQueryable();
         }
     }

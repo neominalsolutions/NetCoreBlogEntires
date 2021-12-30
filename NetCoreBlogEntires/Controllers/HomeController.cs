@@ -30,7 +30,7 @@ namespace NetCoreBlogEntires.Controllers
             _categoryRepository = categoryRepository;
         }
 
-        public IActionResult Index(int currentPage)
+        public IActionResult Index()
         {
 
             // en çok yorum girilen 5 adet 5 post çektik.
@@ -47,9 +47,10 @@ namespace NetCoreBlogEntires.Controllers
                 .Take(5)
                 .ToList();
 
-            var postItems = posts.Select(a => new PostItemViewModel
+            var postItemsModel = posts.Select(a => new PostItemViewModel
             {
                 Id = a.Id,
+                CategoryId = a.CategoryId,
                 AuthorName = a.AuthorName,
                 CategoryName = a.Category.Name,
                 ShortContent = a.ShortContent,
@@ -62,41 +63,56 @@ namespace NetCoreBlogEntires.Controllers
 
             // categoryLastPostView Model
 
-            var categoryLastPosts = _categoryRepository.List();
+            var categories = _categoryRepository.List();
             var categoryLastPostModels = new List<CategoryLastPostViewModel>();
-            categoryLastPosts.ForEach(item =>
+
+
+            foreach (var item in categories)
             {
-                var lastPostQuery = _postRepository.Where(x => x.CategoryId == item.Id).Include(x => x.Comments);
+                // kategorisi göre post sorgusu, last po
+                var lastPostQuery = _postRepository.Where(x => x.CategoryId == item.Id);
 
+                // bu kategoriye ait postların sayısı
                 var categorypostCount = lastPostQuery.Count();
-                var lastPostByCategory = lastPostQuery.OrderByDescending(x => x.PublishDate).Take(1).FirstOrDefault();
+                // bu kategoriye girilmiş son postun kendisi
+                var lastPostByCategory = lastPostQuery.OrderByDescending(x => x.PublishDate).Include(x => x.Comments).Take(1).FirstOrDefault();
 
-                var model = new CategoryLastPostViewModel
+                // ilgili kategori altında herhangi bir makele yoksa boş olan makale kontrolü yapmamız lazım aşağıdaki gibi instance alırken problme yaşıytacağımızdan dolayı. ternery if ile boş null kontrolü yaptık
+
+                var categoryLastPostModel = new CategoryLastPostViewModel
                 {
-                    LastPostAuthorName = lastPostByCategory.AuthorName,
-                    LastPostDate = lastPostByCategory.PublishDate.ToShortDateString(),
+                    LastPostAuthorName = lastPostByCategory == null ?  string.Empty: lastPostByCategory?.AuthorName,
+                    LastPostDate = lastPostByCategory == null  ? string.Empty: lastPostByCategory?.PublishDate.ToShortDateString(),
                     CategoryPostCount = categorypostCount,
-                    LastPostId = lastPostByCategory.Id,
-                    LastPostTitle = lastPostByCategory.Title,
-                    Id = item.Id,
-                    LastPostCommentCount = lastPostByCategory.Comments.Count(),
-                    Name = item.Name
+                    LastPostId = lastPostByCategory == null ?  string.Empty: lastPostByCategory?.Id,
+                    LastPostTitle = lastPostByCategory == null ? string.Empty : lastPostByCategory?.Title,
+                    CategoryId = item.Id,
+                    LastPostCommentCount = lastPostByCategory == null ? 0 : lastPostByCategory.Comments.Count(),
+                    CategoryName = item.Name
                 };
 
-                categoryLastPostModels.Add(model);
+                categoryLastPostModels.Add(categoryLastPostModel);
+            }
 
-            });
+
+            //categoryLastPosts.ForEach(item =>
+            //{
+              
+
+            //});
 
 
             var model = new HomeViewModel
             {
-                CategoryLastPosts = null,
-                PostItems = postItems
+                CategoryLastPosts = categoryLastPostModels,
+                PostItems = postItemsModel
             };
 
 
             return View(model);
         }
+
+       
 
         public IActionResult Privacy()
         {

@@ -3,43 +3,45 @@
 
 
 
-                            <div class="col-lg-6">
+<div class="col-lg-6">
 
-                                <div class="blog-post">
-                                    <div class="down-content">
-                                        <span>@Model.CategoryName</span>
-                                        <a href="post-details.html"><h4>@Model.Title</h4></a>
-                                        <ul class="post-info">
-                                            <li><a href="#">@Model.AuthorName</a></li>
-                                            <li><a href="#">@Model.PublishDate</a></li>
-                                            <li><a href="#">@Model.CommentCount Comments</a></li>
-                                        </ul>
-                                        <p>@Model.ShortContent</p>
-                                        <div class="post-options">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <ul class="post-tags">
+    <div class="blog-post">
+        <div class="down-content">
+            <a asp-controller="Post" asp-action="List" asp-route-categoryId="@Model.CategoryId">
+                <span>@Model.CategoryName</span>
+            </a>
+          
+            <a href="post-details.html"><h4>@Model.Title</h4></a>
+            <ul class="post-info">
+                <li><a href="#">@Model.AuthorName</a></li>
+                <li><a href="#">@Model.PublishDate</a></li>
+                <li><a href="#">@Model.CommentCount Comments</a></li>
+            </ul>
+            <p>@Model.ShortContent</p>
+            <div class="post-options">
+                <div class="row">
+                    <div class="col-6">
+                        <ul class="post-tags">
 
 
-                                                        <li><i class="fa fa-tags"></i></li>
-                                                        @foreach (var tagName in Model.Tags)
-                                                        {
-                                                            <li><a href="#">@tagName</a>,</li>
-                                                        }
+                            <li><i class="fa fa-tags"></i></li>
+                            @foreach (var tagName in Model.Tags)
+                            {
+                                <li><a asp-controller="Post" asp-action="List" asp-route-tagName="@tagName">@tagName</a>,</li>
+                            }
 
-                                                    </ul>
-                                                </div>
-                                                @*<div class="col-6">
-                                                    <ul class="post-share">
-                                                        <li><i class="fa fa-share-alt"></i></li>
-                                                        <li><a href="#">Facebook</a>,</li>
-                                                        <li><a href="#"> Twitter</a></li>
-                                                    </ul>
-                                                </div>*@
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        </ul>
+                    </div>
+                    @*<div class="col-6">
+                            <ul class="post-share">
+                                <li><i class="fa fa-share-alt"></i></li>
+                                <li><a href="#">Facebook</a>,</li>
+                                <li><a href="#"> Twitter</a></li>
+                            </ul>
+                        </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
 
-                            </div>
-                        
+</div>

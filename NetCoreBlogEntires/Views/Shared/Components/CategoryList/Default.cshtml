@@ -1,0 +1,19 @@
+﻿
+@model List<CategoryViewModel>
+
+
+<div class="sidebar-item categories">
+    <div class="sidebar-heading">
+        <h2>Categories</h2>
+    </div>
+    <div class="content">
+        <ul>
+
+            @foreach (var item in Model)
+            {
+                <li><a asp-controller="Post" asp-action="List" asp-route-categoryId="@item.Id">@item.CategoryName</a></li>
+            }
+
+        </ul>
+    </div>
+</div>

@@ -8,7 +8,7 @@ namespace NetCoreBlogEntires.Data.Repositories
 {
     public interface IRepository<T>
     {
-        IQueryable<T> Where(Expression<Func<T, bool>> lamda);
+        IQueryable<T> Where(Expression<Func<T, bool>> lamda = null);
         List<T> List();
         long Count();
         T Find(string Id);

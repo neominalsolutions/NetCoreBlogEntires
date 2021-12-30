@@ -7,6 +7,8 @@ namespace NetCoreBlogEntires.Models
 {
     public class PostItemViewModel
     {
+        public string CategoryId { get; set; }
+
         public string Id { get; set; }
 
         public string CategoryName { get; set; }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace NetCoreBlogEntires.Data.Repositories
@@ -15,7 +16,7 @@ namespace NetCoreBlogEntires.Data.Repositories
         /// <param name="limit">Limit kaç adet kayıt göstereceğimiziş belirtiğimiz parametre</param>
         /// <param name=""></param>
         /// <returns></returns>
-        List<Post> GetPagedPosts(int currentPage = 1, int limit = 10);
-        int GetTotalPageNumber(int limit);
+        IQueryable<Post> GetPagedPosts(Expression<Func<Post, bool>> filter, int currentPage = 1, int limit = 10);
+        int GetTotalPageNumber(Expression<Func<Post, bool>> filter,int limit);
     }
 }

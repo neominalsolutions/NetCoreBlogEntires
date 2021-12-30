@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace NetCoreBlogEntires.Models
 {
-    public class CategoryViewModel
+    public class PostListViewModel
     {
-        public string Id { get; set; }
-        public string CategoryName { get; set; }
+        public List<PostItemViewModel> PostItems { get; set; }
+        public int PageCount { get; set; }
 
     }
 }

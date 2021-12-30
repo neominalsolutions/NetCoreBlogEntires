@@ -28,7 +28,7 @@ namespace NetCoreBlogEntires.Data.Repositories
             return _dbSet.Include(x => x.Comments).Include(x => x.Category).ToList();
         }
 
-        public List<Post> GetPagedPosts(int currentPage = 1, int limit = 10)
+        public IQueryable<Post> GetPagedPosts(Expression<Func<Post,bool>> filter, int currentPage = 1, int limit = 10)
         {
 
             if(currentPage < 1)
@@ -36,13 +36,15 @@ namespace NetCoreBlogEntires.Data.Repositories
                 throw new Exception("CurrentPage en düşük 1 olarak tanımlanabilir");
             }
 
-            return _dbSet.Include(x => x.Tags).Include(x => x.Comments).Include(x => x.Category).Skip((limit * (currentPage - 1))).Take(limit).ToList();
+            
+
+            return _dbSet.Where(filter).Include(x => x.Tags).Include(x => x.Comments).Include(x => x.Category).Skip((limit * (currentPage - 1))).Take(limit).AsQueryable();
 
         }
 
-        public int GetTotalPageNumber(int limit)
+        public int GetTotalPageNumber(Expression<Func<Post, bool>> filter,int limit)
         {
-            var totalCount = _dbSet.Count();
+            var totalCount = _dbSet.Where(filter).Count();
             // Math Celing ile sayfa sayısını yukarı yuvarladık.
             return (int)Math.Ceiling((decimal)totalCount / (decimal)limit); 
         }
