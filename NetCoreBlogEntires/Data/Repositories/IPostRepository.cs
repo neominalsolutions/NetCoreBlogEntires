@@ -15,7 +15,7 @@ namespace NetCoreBlogEntires.Data.Repositories
         /// <param name="limit">Limit kaç adet kayıt göstereceğimiziş belirtiğimiz parametre</param>
         /// <param name=""></param>
         /// <returns></returns>
-        List<Post> GetPagedPosts(int currentPage, int limit);
+        List<Post> GetPagedPosts(int currentPage = 1, int limit = 10);
         int GetTotalPageNumber(int limit);
     }
 }
