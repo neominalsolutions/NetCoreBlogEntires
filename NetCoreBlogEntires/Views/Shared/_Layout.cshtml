@@ -81,10 +81,23 @@
         </div>
     </footer>
 
+  
+
 
     <!-- Bootstrap core JavaScript -->
     <script src="~/site/vendor/jquery/jquery.min.js"></script>
     <script src="~/site/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            $("button").click(function () {
+                $("p").remove(".test");
+            });
+        });
+
+
+    </script>
 
     <!-- Additional Scripts -->
     <script src="~/site/assets/js/custom.js"></script>

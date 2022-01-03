@@ -18,7 +18,15 @@ namespace NetCoreBlogEntires.Data.Repositories
         // Post repositoryde find polimorfik olarak davranmalı normal find işimize yaramıyor. Include Joinli çekmek zorundayız.
         public override Post Find(string Id)
         {
-           return _dbSet.Include(x => x.Tags).Include(x => x.Comments).Include(x => x.Category).FirstOrDefault(x => x.Id == Id);
+            // aşağıdaki örnekte bir entity içerisindeki koleksiyondan yorum tarihine göre ilk 5 tane kayıtı sadece veri tabanından çektik.
+           return _dbSet
+                .Include(x => x.Tags)
+                .Include(x => 
+                x.Comments
+                .OrderByDescending(y=> y.PublishDate)
+                .Take(5))
+                .Include(x => x.Category)
+                .FirstOrDefault(x => x.Id == Id);
  
         }
 
@@ -54,6 +62,16 @@ namespace NetCoreBlogEntires.Data.Repositories
             var totalCount = _dbSet.Where(filter).Count();
             // Math Celing ile sayfa sayısını yukarı yuvarladık.
             return (int)Math.Ceiling((decimal)totalCount / (decimal)limit); 
+        }
+
+        public int GetTotalCommentsCount(string postId)
+        {
+            // bir entity içerisine Include ile alt entitylere bağlandığımızda o entity'in alt kolleksiyonlarının hepsi rame çekilir.
+            return _context.Posts
+                .Include(x => x.Comments)
+                .FirstOrDefault(x => x.Id == postId)
+                .Comments
+                .Count();
         }
     }
 }

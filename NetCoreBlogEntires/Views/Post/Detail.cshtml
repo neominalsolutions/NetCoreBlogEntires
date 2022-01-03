@@ -1,0 +1,256 @@
+﻿
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model PostDetailViewModel
+
+<h1>Detail</h1>
+
+
+
+<section class="blog-posts grid-system">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="all-blog-posts">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="blog-post">
+                                <div class="blog-thumb">
+                                    <img src="assets/images/blog-post-02.jpg" alt="">
+                                </div>
+                                <div class="down-content">
+                                    <span>@Model.CategoryName</span>
+                                    <a href="post-details.html"><h4>@Model.Title</h4></a>
+                                    <ul class="post-info">
+                                        <li><a href="#">@Model.AuthorName</a></li>
+                                        <li><a href="#">@Model.PublishDate</a></li>
+                                        <li><a href="#" ><span class="commentCount">@Model.CommentCount</span> <span>Comments</span></a></li>
+                                    </ul>
+                                    <p>
+                                        @Html.Raw(Model.Content)
+                                    </p>
+                                    <div class="post-options">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <ul class="post-tags">
+                                                    <li><i class="fa fa-tags"></i></li>
+                                                    @foreach (var tagName in Model.TagNames)
+                                                    {
+                                                        <li>
+                                                            <a href="#">@tagName</a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                            @*<div class="col-6">
+                                                <ul class="post-share">
+                                                    <li><i class="fa fa-share-alt"></i></li>
+                                                    <li><a href="#">Facebook</a>,</li>
+                                                    <li><a href="#"> Twitter</a></li>
+                                                </ul>
+                                            </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="sidebar-item comments">
+                                <div class="sidebar-heading">
+                                    <h2><span class="commentCount">@Model.CommentCount </span> <span>Comments</span></h2>
+                                </div>
+                                <div class="content">
+                                    <ul style="display: flex; flex-direction: column;" id="commentContainer">
+
+                                        @foreach (var comment in Model.Comments)
+                                        {
+
+                                            <li>
+                                                <div class="author-thumb">
+                                                    <img src="/site/assets/images/comment-author-01.jpg" alt="">
+                                                </div>
+                                                <div class="right-content">
+                                                    <h4>@comment.CommentBy<span>@comment.PublishDate</span></h4>
+                                                    <p>@comment.Text</p>
+                                                </div>
+                                            </li>
+                                        }
+
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        @* Yorum yazma formu *@
+
+                        <div class="col-lg-12">
+                            <div class="sidebar-item submit-comment">
+                                <div class="sidebar-heading">
+                                    <h2>Your comment</h2>
+                                </div>
+                                <div class="content">
+                                    <form id="comment" name="commentForm" method="post" onsubmit="FormSubmit(event)">
+                                        <input id="postId" type="hidden" name="PostId" value="@Model.PostId" />
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12">
+                                                <fieldset>
+                                                    <input name="CommentBy"  type="text" id="name" placeholder="Your name" required="">
+                                                </fieldset>
+                                            </div>
+                                        
+                                            <div class="col-lg-12">
+                                                <fieldset>
+                                                    <textarea name="Text" rows="6" id="message" placeholder="Type your comment" required=""></textarea>
+                                                </fieldset>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <fieldset>
+                                                    <button type="submit" id="form-submit" class="main-button">Yorum Yap</button>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="sidebar">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="sidebar-item search">
+                                <form id="search_form" name="gs" method="GET" action="#">
+                                    <input type="text" name="q" class="searchText" placeholder="type to search..." autocomplete="on">
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="sidebar-item recent-posts">
+                                <div class="sidebar-heading">
+                                    <h2>Recent Posts</h2>
+                                </div>
+                                <div class="content">
+                                    <ul>
+                                        <li>
+                                            <a href="post-details.html">
+                                                <h5>Vestibulum id turpis porttitor sapien facilisis scelerisque</h5>
+                                                <span>May 31, 2020</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="post-details.html">
+                                                <h5>Suspendisse et metus nec libero ultrices varius eget in risus</h5>
+                                                <span>May 28, 2020</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="post-details.html">
+                                                <h5>Swag hella echo park leggings, shaman cornhole ethical coloring</h5>
+                                                <span>May 14, 2020</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="sidebar-item categories">
+                                <div class="sidebar-heading">
+                                    <h2>Categories</h2>
+                                </div>
+                                <div class="content">
+                                    <ul>
+                                        <li><a href="#">- Nature Lifestyle</a></li>
+                                        <li><a href="#">- Awesome Layouts</a></li>
+                                        <li><a href="#">- Creative Ideas</a></li>
+                                        <li><a href="#">- Responsive Templates</a></li>
+                                        <li><a href="#">- HTML5 / CSS3 Templates</a></li>
+                                        <li><a href="#">- Creative &amp; Unique</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="sidebar-item tags">
+                                <div class="sidebar-heading">
+                                    <h2>Tag Clouds</h2>
+                                </div>
+                                <div class="content">
+                                    <ul>
+                                        <li><a href="#">Lifestyle</a></li>
+                                        <li><a href="#">Creative</a></li>
+                                        <li><a href="#">HTML5</a></li>
+                                        <li><a href="#">Inspiration</a></li>
+                                        <li><a href="#">Motivation</a></li>
+                                        <li><a href="#">PSD</a></li>
+                                        <li><a href="#">Responsive</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts {
+
+    <script>
+
+    const FormSubmit = (event) => {
+        event.preventDefault();
+
+        console.log('event', event);
+
+        const param = {
+           /* PostId: $('#postId').value(),*/
+             PostId: commentForm.PostId.value,
+            CommentBy: commentForm.CommentBy.value,
+            Text: commentForm.Text.value
+        }
+
+        console.log('comment', param);
+
+
+        $.ajax({
+            method: 'post',
+            url: '/Post/SendComment',
+            data: JSON.stringify(param),
+            contentType: 'application/json',
+            success: function (response) {
+
+                // prepend ilgili elementin en başına ekler.
+                // append sonuna ekler.
+                $("#commentContainer").prepend(`<li><div class="author-thumb"><img src="/site/assets/images/comment-author-01.jpg" alt=""></div><div class="right-content"><h4>${response.commentBy}<span> ${response.publishDate}</span></h4><p>${response.text}</p></div></li>`)
+
+                let commentCount = Number($('.commentCount:first').text());
+
+
+                console.log('comment-count', commentCount);
+                $('.commentCount').text(++commentCount);
+                // comment sayımızda 1 adet artırdık
+                // comment sayısını artırıcaz
+                // comment append et.
+            },
+            error: function (err) {
+                console.log('hata', err);
+            }
+        })
+
+    }
+
+
+
+    </script>
+
+}

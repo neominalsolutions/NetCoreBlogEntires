@@ -78,5 +78,63 @@ namespace NetCoreBlogEntires.Controllers
 
             return View(model);
         }
+
+
+        public IActionResult Detail(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
+
+           var post =  _postRepository.Find(id);
+
+            var model = new PostDetailViewModel
+            {
+                CategoryName = post.Category.Name,
+                AuthorName = post.AuthorName,
+                Content = post.Content,
+                PostId = post.Id,
+                PublishDate = post.PublishDate.ToShortDateString(),
+                TagNames = post.Tags.Select(x => x.Name).ToArray(),
+                Title = post.Title
+
+            };
+
+            // EF çekilen sorguya göre post üzerinden comment bilgisini ramde tutuğundan dolayı aşağıdaki sorgunun çalışmasından sonra comment sayısı değişecektir. yukarıdaki var post nesnesinin referansı değieceğei için ekranda 5 adet comment ile tüm comment sayılarını doğru bir şekilde göstermek için sıralı bir şekilde işlem yapmamız gerekti.
+            model.Comments = post.Comments.Select(a => new CommentViewModel
+            {
+                CommentBy = a.CommentBy,
+                PublishDate = a.PublishDate.ToShortDateString(),
+                Text = a.Text
+            }).ToList();
+
+            model.CommentCount = _postRepository.GetTotalCommentsCount(id);
+
+            
+
+
+          
+
+            return View(model);
+
+        }
+
+
+        [HttpPost]
+        public JsonResult SendComment([FromBody] PostCommentInputModel model)
+        {
+
+
+            var post = _postRepository.Find(model.PostId);
+            var comment = new Comment(commentBy: model.CommentBy, text: model.Text);
+            post.AddComment(comment);
+            _postRepository.Save();
+
+            model.PublishDate = comment.PublishDate.ToShortDateString();
+
+            return Json(model);
+        }
     }
 }

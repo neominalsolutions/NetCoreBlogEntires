@@ -36,6 +36,7 @@ namespace NetCoreBlogEntires
             });
 
             services.AddScoped<IPostRepository,PostRepository>();
+            services.AddScoped<IPostCommentCountRepo, PostRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<IPostService, PostService>();

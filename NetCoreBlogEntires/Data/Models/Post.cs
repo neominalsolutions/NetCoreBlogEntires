@@ -103,12 +103,6 @@ namespace NetCoreBlogEntires.Data.Models
                 throw new Exception("Yorum yapmak için mail adresiniz veya kullanıcı adınızı giriniz");
             }
 
-            CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
-            TextInfo textInfo = cultureInfo.TextInfo;
-
-            // ahmet  => Ahmet
-            comment.CommentBy = textInfo.ToTitleCase(comment.CommentBy.Trim());
-            comment.Text = comment.Text.Trim();
 
             _comments.Add(comment);
         }

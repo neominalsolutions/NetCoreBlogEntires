@@ -7,7 +7,12 @@ using System.Threading.Tasks;
 
 namespace NetCoreBlogEntires.Data.Repositories
 {
-    public interface IPostRepository: IRepository<Post>
+    public interface IPostCommentCountRepo: IRepository<Post>
+    {
+        int GetTotalCommentsCount(string postId);
+    }
+
+    public interface IPostRepository: IRepository<Post>, IPostCommentCountRepo
     {
         /// <summary>
         /// 

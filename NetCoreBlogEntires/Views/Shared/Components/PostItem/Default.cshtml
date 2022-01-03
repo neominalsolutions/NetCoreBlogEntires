@@ -11,7 +11,7 @@
                 <span>@Model.CategoryName</span>
             </a>
           
-            <a href="post-details.html"><h4>@Model.Title</h4></a>
+            <a asp-controller="Post" asp-action="Detail" asp-route-id="@Model.Id"><h4>@Model.Title</h4></a>
             <ul class="post-info">
                 <li><a href="#">@Model.AuthorName</a></li>
                 <li><a href="#">@Model.PublishDate</a></li>
