@@ -27,20 +27,23 @@ namespace NetCoreBlogEntires.Data.Models
             {
                 CommentBy = "Anonim Hesap";
             }
+            else
+            {
+                // bu arkadaş helper olacak.
+                // baş harfini büyük yapar. sistemin dil ayarına göre bu işlemi yapar.
 
-            // bu arkadaş helper olacak.
-            // baş harfini büyük yapar. sistemin dil ayarına göre bu işlemi yapar.
+                // farklı dillere göre operasyon yapsın diye aşağıdaki kod ile dil ayarı değiştirebiliriz.
+                //       System.Threading.Thread.CurrentThread.CurrentCulture =
+                //System.Globalization.CultureInfo.CreateSpecificCulture("tr-TR");
 
-            // farklı dillere göre operasyon yapsın diye aşağıdaki kod ile dil ayarı değiştirebiliriz.
-     //       System.Threading.Thread.CurrentThread.CurrentCulture =
-     //System.Globalization.CultureInfo.CreateSpecificCulture("tr-TR");
+                // dil değiştirmek ile ilgili bir örnek de buraya katalım.
 
-            // dil değiştirmek ile ilgili bir örnek de buraya katalım.
+                CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+                TextInfo textInfo = cultureInfo.TextInfo;
 
-            CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
-            TextInfo textInfo = cultureInfo.TextInfo;
-
-            CommentBy = textInfo.ToTitleCase(commentBy.Trim());
+                CommentBy = textInfo.ToTitleCase(commentBy.Trim());
+            }
+           
         }
 
         private void SetText(string text)
