@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NetCoreBlogEntires.Areas.Admin.Models;
 using NetCoreBlogEntires.Data.Repositories;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace NetCoreBlogEntires.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+    [Area("Admin")][Authorize]
     public class PostController : Controller
     {
         private readonly ICategoryRepository _categoryRepository;

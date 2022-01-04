@@ -3,12 +3,14 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NetCoreBlogEntires.Data.Contexts;
 using NetCoreBlogEntires.Data.Repositories;
+using NetCoreBlogEntires.Identity;
 using NetCoreBlogEntires.Models;
 using NetCoreBlogEntires.Services;
 using NetCoreBlogEntires.Validators;
@@ -41,13 +43,26 @@ namespace NetCoreBlogEntires
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            services.AddDbContext<AppIdentityDbContext>(opt =>
+            {
+                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+
+            services.AddIdentity<ApplicationUser, ApplicationRole>().AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
+
+            // uygulamaya identity ile birlikte kimlik doðrulama servisi ekleriz
+            services.AddAuthentication();
+
             services.AddScoped<IPostRepository,PostRepository>();
             services.AddScoped<IPostCommentCountRepo, PostRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<IPostService, PostService>();
 
-           
+            services.AddSingleton<IEmailService, SendGridEmailService>();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,7 +82,8 @@ namespace NetCoreBlogEntires
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            // bu servisi aktif hale getiririz.
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

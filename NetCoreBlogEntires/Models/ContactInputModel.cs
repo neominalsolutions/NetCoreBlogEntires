@@ -33,6 +33,10 @@ namespace NetCoreBlogEntires.Models
         public string MessageBody { get; set; }
 
 
+        public string Token { get; set; }
+
+
+
 
 
     }

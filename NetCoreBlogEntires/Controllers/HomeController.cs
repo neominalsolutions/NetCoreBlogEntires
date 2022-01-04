@@ -5,6 +5,7 @@ using NetCoreBlogEntires.Data.Contexts;
 using NetCoreBlogEntires.Data.Models;
 using NetCoreBlogEntires.Data.Repositories;
 using NetCoreBlogEntires.Models;
+using NetCoreBlogEntires.Services;
 using NetCoreBlogEntires.Validators;
 using System;
 using System.Collections.Generic;
@@ -21,9 +22,10 @@ namespace NetCoreBlogEntires.Controllers
         private readonly ITagRepository _tagRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly ContactInputModelValidator _contactInputModelValidator;
+        private readonly IEmailService _emailService;
 
 
-        public HomeController(ILogger<HomeController> logger, IPostRepository postRepository, ITagRepository tagRepository, ICategoryRepository categoryRepository, ContactInputModelValidator contactInputValidator)
+        public HomeController(ILogger<HomeController> logger, IPostRepository postRepository, ITagRepository tagRepository, ICategoryRepository categoryRepository, ContactInputModelValidator contactInputValidator, IEmailService emailService)
         {
 
             _logger = logger;
@@ -31,6 +33,7 @@ namespace NetCoreBlogEntires.Controllers
             _tagRepository = tagRepository;
             _categoryRepository = categoryRepository;
             _contactInputModelValidator = contactInputValidator;
+            _emailService = emailService;
         }
 
         [HttpGet]
@@ -40,13 +43,17 @@ namespace NetCoreBlogEntires.Controllers
         }
 
         [HttpPost]
-        public IActionResult Contact(ContactInputModel model)
+        public async Task<IActionResult> Contact(ContactInputModel model)
         {
             // valid olup olmadığını Validate methodu ile kontrol ederiz.
            var result =  _contactInputModelValidator.Validate(model);
 
             if (result.IsValid)
             {
+                await _emailService.SendEmailAsync("mert.alptekin@neominal.com", model.Email, model.Subject, $"<p>{model.MessageBody}</p>");
+
+                ViewBag.Message = "Mesajınız iletildi.sizinle en kısa zamanda iletişime geçeceğiz.";
+
                 // Mail gönder
             }
 
@@ -147,5 +154,9 @@ namespace NetCoreBlogEntires.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
+
+     
     }
 }
