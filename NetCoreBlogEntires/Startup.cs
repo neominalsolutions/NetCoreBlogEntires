@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -7,7 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NetCoreBlogEntires.Data.Contexts;
 using NetCoreBlogEntires.Data.Repositories;
+using NetCoreBlogEntires.Models;
 using NetCoreBlogEntires.Services;
+using NetCoreBlogEntires.Validators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +33,8 @@ namespace NetCoreBlogEntires
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            // mvc uygulamasýndaki validayon kontrolü için fluent validation kontrolüde kullan.
+            services.AddControllersWithViews().AddFluentValidation();
             services.AddDbContext<AppDbContext>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
@@ -40,6 +45,9 @@ namespace NetCoreBlogEntires
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<IPostService, PostService>();
+
+            // FluentValidation ile kullandýðýmýz servisleri Transient olarak iþaretleriz.Çünkü her bir post istediðinde validayon kontrolü tekrar tekrar sýfýrdan yapamlýyýz.
+            services.AddTransient<ContactInputModelValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

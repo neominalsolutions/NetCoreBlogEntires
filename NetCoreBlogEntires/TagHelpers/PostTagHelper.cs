@@ -22,7 +22,7 @@ namespace NetCoreBlogEntires.TagHelpers
             foreach (var tagName in TagNames)
             {
                 // # asciicode karşılığı link üzerinden gönderince %23 olduğu için filterede hata aldık.ondan değiştirdik.
-                tagListItems += $"<li><a href='/Post/List?tagName={tagName.Replace("#","%23")}'>{tagName}</a></li>";
+                tagListItems += $"<li style='padding:2px;'><a href='/Post/List?tagName={tagName.Replace("#","%23")}'>{tagName}</a></li>";
             }
 
             output.Content.SetHtmlContent($"<div class='post-options'><div class='row'><div class='col-12'><ul class='post-tags'><li><i class='fa fa-tags'></i></li>{tagListItems}</ul></div></div></div>");

@@ -5,6 +5,7 @@ using NetCoreBlogEntires.Data.Contexts;
 using NetCoreBlogEntires.Data.Models;
 using NetCoreBlogEntires.Data.Repositories;
 using NetCoreBlogEntires.Models;
+using NetCoreBlogEntires.Validators;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,15 +20,37 @@ namespace NetCoreBlogEntires.Controllers
         private readonly IPostRepository _postRepository;
         private readonly ITagRepository _tagRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly ContactInputModelValidator _contactInputModelValidator;
 
 
-        public HomeController(ILogger<HomeController> logger, IPostRepository postRepository, ITagRepository tagRepository, ICategoryRepository categoryRepository)
+        public HomeController(ILogger<HomeController> logger, IPostRepository postRepository, ITagRepository tagRepository, ICategoryRepository categoryRepository, ContactInputModelValidator contactInputValidator)
         {
 
             _logger = logger;
             _postRepository = postRepository;
             _tagRepository = tagRepository;
             _categoryRepository = categoryRepository;
+            _contactInputModelValidator = contactInputValidator;
+        }
+
+        [HttpGet]
+        public IActionResult Contact()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Contact(ContactInputModel model)
+        {
+            // valid olup olmadığını Validate methodu ile kontrol ederiz.
+           var result =  _contactInputModelValidator.Validate(model);
+
+            if (result.IsValid)
+            {
+                // Mail gönder
+            }
+
+            return View();
         }
 
         public IActionResult Index()
