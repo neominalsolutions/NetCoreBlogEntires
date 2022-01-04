@@ -11,11 +11,12 @@ namespace NetCoreBlogEntires.Validators
     {
         public ContactInputModelValidator()
         {
+            RuleFor(x => x.Name).NotEmpty().WithMessage("isim boş geçilemez");
             RuleFor(x => x.Email).EmailAddress().WithMessage("E-posta formatında giriniz");
             RuleFor(x => x.Email).NotEmpty().WithMessage("E-Posta alanı boş geçilemez");
             RuleFor(x => x.Subject).NotEmpty().WithMessage("Konu alanı boş geçilemez");
-            RuleFor(x => x.Message).NotEmpty().WithMessage("Mesaj alanı boş geçilemez");
-            RuleFor(x => x.Message).MaximumLength(200).WithMessage("200 karakter uzun bir mesaj girilemez");
+            RuleFor(x => x.MessageBody).NotEmpty().WithMessage("Mesaj alanı boş geçilemez");
+            //RuleFor(x => x.Message).MaximumLength(200).WithMessage("200 karakter uzun bir mesaj girilemez");
             //RuleFor(x => x.Age).LessThan(18).GreaterThan(30).WithMessage("18-30 yaş aralığında olmalısınız");
             //RuleFor(x => x.Subject).Equal("Deneme").WithMessage("Subject alanı deneme olarak girilmemiş");
             //RuleFor(x => x.Subject).NotEqual("Deneme").WithMessage("Subject alanı deneme olarak girilmemiş");

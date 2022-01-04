@@ -34,7 +34,8 @@ namespace NetCoreBlogEntires
         public void ConfigureServices(IServiceCollection services)
         {
             // mvc uygulamasýndaki validayon kontrolü için fluent validation kontrolüde kullan.
-            services.AddControllersWithViews().AddFluentValidation();
+            services.AddControllersWithViews().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
+            // startup dosyasýnýn bulunduðu uygulamada ne kadar validator varsa net core mvc projesine tanýt.
             services.AddDbContext<AppDbContext>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
@@ -46,8 +47,7 @@ namespace NetCoreBlogEntires
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<IPostService, PostService>();
 
-            // FluentValidation ile kullandýðýmýz servisleri Transient olarak iþaretleriz.Çünkü her bir post istediðinde validayon kontrolü tekrar tekrar sýfýrdan yapamlýyýz.
-            services.AddTransient<ContactInputModelValidator>();
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

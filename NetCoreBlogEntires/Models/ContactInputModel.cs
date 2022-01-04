@@ -8,6 +8,9 @@ namespace NetCoreBlogEntires.Models
 {
 
     // dotnet add package FluentValidation.AspNetCore
+    //    services.AddControllersWithViews().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
+    //  ContactInputModelValidator:AbstractValidator<ContactInputModel> sınıf oluşturmak
+    //var result =  _contactInputModelValidator.Validate(model);
 
 
     // Jquery unobtrusive ile client side validation kontrollü form yapalım
@@ -27,9 +30,9 @@ namespace NetCoreBlogEntires.Models
 
         //[Required(ErrorMessage ="Mesaj alanı boş geçilemez")]
         //[RegularExpression(@"((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,15})")]
-        public string Message { get; set; }
+        public string MessageBody { get; set; }
 
-        public int Age { get; set; }
+
 
 
     }
