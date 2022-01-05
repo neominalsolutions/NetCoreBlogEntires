@@ -23,7 +23,7 @@ namespace NetCoreBlogEntires.Areas.Admin.Controllers
         public async Task<IActionResult> Login()
         {
 
-            //var result = await _userManager.CreateAsync(new ApplicationUser { UserName = "Mert", Email = "mert.alptekin@neominal.com" }, "Neominal35?");
+            //var result = await _userManager.CreateAsync(new ApplicationUser { UserName = "Berkay", Email = "berkay.erarslan@gmail.com" }, "Neominal34?");
 
             //// kullanıcı oluştuysa
             //if (result.Succeeded)

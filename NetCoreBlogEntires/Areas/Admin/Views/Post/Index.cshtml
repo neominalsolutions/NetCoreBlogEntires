@@ -30,6 +30,11 @@
             <td>@item.AuthorName</td>
             <td>@item.CommentCount</td>
             <td>@item.PublishDate</td>
+        
+
+            @* bu rol kontrolünü cookieden yapar.  *@
+            @if(User.IsInRole("Admin"))
+             {
             <td>
                 <label class="switch">
                     @if (item.IsActive)
@@ -45,6 +50,7 @@
 
                 </label>
             </td>
+            }
             <td>
                 <a asp-area="Admin" asp-controller="Post" asp-action="Detail" asp-route-id="@item.Id">Detay</a>
             </td>

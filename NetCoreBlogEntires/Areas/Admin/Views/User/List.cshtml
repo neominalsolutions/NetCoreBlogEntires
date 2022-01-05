@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewData["Title"] = "UserList";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@model UserPageViewModel
+
+
+@section Styles {
+    <link href="~/site/vendor/bootstrap-multiselect/css/bootstrap-multiselect.css" rel="stylesheet" />
+}
+
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Email</th>
+            <th scope="col">User</th>
+            <th scope="col">Roles</th>
+            <th scope="col">Aktif Mi</th>
+            <th>Role Seçimi</th>
+            <th>Güncelle</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>@user.UserName</td>
+                <td>@string.Join(',', user.Roles)</td>
+                <td>@(user.IsActivated ? "Akif Hesap":"Pasif Hesap")</td>
+                <td>
+                    <select multiple class="multiselect">
+                        @foreach (var role in Model.Roles)
+                        {
+                            @if (user.Roles.Any(x => x == role.RoleName))
+                            {
+                                <option value="@role.RoleName" selected>@role.RoleName</option>
+                            }
+                            else
+                            {
+                                    <option value="@role.RoleName" >@role.RoleName</option>
+                               
+                            }
+
+                        }
+                    </select>
+                </td>
+                <td>
+                    <button class="btn btn-primary" onclick="assingRoles('@user.UserId')">Role Ata</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+
+    <script src="~/site/vendor/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
+
+    <script>
+
+
+        $(document).ready(function () {
+            $('.multiselect').multiselect({
+                numberDisplayed: 4
+            });
+        });
+
+
+
+        const assingRoles = (userId) => {
+
+            // seçilenlerin value yakaladık
+            // $('.multiselect').val()
+
+            const roleNames = $('.multiselect').val();
+
+        
+                const param = {
+                    assignedUserId: userId,
+                    assignedRoleNames: roleNames
+                }
+
+                $.ajax({
+                    url: '/Admin/User/RoleAssignment',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(param),
+                    success: function (response) {
+                        alert('Role Ataması tamam');
+                    },
+                    error: function (err) {
+                        console.log('role-assignment-err', err);
+                    }
+                })
+
+                console.log('param', param);
+            
+        }
+
+
+
+    </script>
+
+}
+

@@ -104,7 +104,8 @@ namespace NetCoreBlogEntires.Areas.Admin.Controllers
             return NotFound();
         }
 
-        [HttpPost]
+        [HttpPost][Authorize(Roles ="Editor, Admin")]
+        // sadece Editor ve Admin makale güncelleyebilir.
         public JsonResult ChangeStatus([FromBody] PostChangeStatusInputModel model)
         {
             var post = _postRepository.Find(model.Id);

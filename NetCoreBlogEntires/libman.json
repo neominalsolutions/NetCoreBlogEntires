@@ -11,6 +11,11 @@
       "library": "jquery-validation-unobtrusive@3.2.12",
       "destination": "wwwroot/site/vendor/jquery-validation-unobtrusive",
       "provider": "cdnjs"
+    },
+    {
+      "library": "bootstrap-multiselect@1.1.1",
+      "destination": "wwwroot/site/vendor/bootstrap-multiselect",
+      "provider": "cdnjs"
     }
   ]
 }
