@@ -16,6 +16,11 @@ namespace NetCoreBlogEntires.Data.Models
         public DateTime PublishDate { get; set; }
         public string Content { get; set; }
 
+        /// <summary>
+        /// Admin yada Editor rolüne sahip olan kişiler IsActive olarak işaretlerse görünecekler. Onaylanan makaleler IsActive true oluyorlar.
+        /// </summary>
+        public bool IsActive { get; private set; }
+
         public string AuthorName { get; set; }
         public string ShortContent { get; set; }
         public string CategoryId { get; set; }
@@ -29,6 +34,7 @@ namespace NetCoreBlogEntires.Data.Models
             SetContent(content);
             SetShortContent(shortContent);
             SetAuthorName(authorName);
+            IsActive = false;
         }
 
 
@@ -135,6 +141,15 @@ namespace NetCoreBlogEntires.Data.Models
            
         }
    
+        /// <summary>
+        /// Makale'nin aktif yada pasif yazılması için kullandık.
+        /// </summary>
+        /// <param name="isActive"></param>
+        public void SetPostStatus(bool isActive)
+        {
+            IsActive = isActive;
+            PublishDate = DateTime.Now;
+        }
 
     }
 }

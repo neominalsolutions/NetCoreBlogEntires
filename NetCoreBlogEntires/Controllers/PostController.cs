@@ -58,7 +58,7 @@ namespace NetCoreBlogEntires.Controllers
             var model = new PostListViewModel
             {
 
-                PostItems = _postRepository.GetPagedPosts(queryFilter, currentPage,4).Select(a => new PostItemViewModel
+                PostItems = _postRepository.GetPagedPosts(queryFilter, currentPage,4).Where(x=> x.IsActive).Select(a => new PostItemViewModel
                 {
                     AuthorName = a.AuthorName,
                     CategoryId = a.CategoryId,

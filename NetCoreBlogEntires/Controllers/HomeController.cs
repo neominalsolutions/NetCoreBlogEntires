@@ -68,7 +68,7 @@ namespace NetCoreBlogEntires.Controllers
             // where asQuearable olduğu için veritabanından sadece 5 adet kayıt seçildi.
             // 2 farklı sıralama yapmak istersek ikinci alan için thenBy kullanırız.
             var posts = _postRepository
-                .Where(null)
+                .Where(x=> x.IsActive)
                 .Include(x=> x.Category)
                 .Include(x=> x.Comments)
                 .Include(x=> x.Tags)

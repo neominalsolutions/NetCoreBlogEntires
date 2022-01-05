@@ -23,7 +23,7 @@ namespace NetCoreBlogEntires.ViewComponents
         {
 
             var model = _postRepository
-                .Where()
+                .Where(x=> x.IsActive)
                  .OrderByDescending(x=> x.PublishDate)
                  .Take(3)
                 .Select(a => new RecentPostViewModel

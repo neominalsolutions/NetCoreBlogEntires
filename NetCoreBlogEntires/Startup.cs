@@ -2,6 +2,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -36,8 +37,10 @@ namespace NetCoreBlogEntires
         public void ConfigureServices(IServiceCollection services)
         {
             // mvc uygulamasýndaki validayon kontrolü için fluent validation kontrolüde kullan.
-            services.AddControllersWithViews().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
+            services.AddControllersWithViews().AddRazorRuntimeCompilation().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
             // startup dosyasýnýn bulunduðu uygulamada ne kadar validator varsa net core mvc projesine tanýt.
+
+        
             services.AddDbContext<AppDbContext>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
@@ -53,6 +56,23 @@ namespace NetCoreBlogEntires
 
             // uygulamaya identity ile birlikte kimlik doðrulama servisi ekleriz
             services.AddAuthentication();
+
+
+
+            services.ConfigureApplicationCookie(opt =>
+            {
+                opt.LoginPath = new PathString("/Admin/Auth/Login");
+                opt.AccessDeniedPath = new PathString("/Admin/Auth/AccessDenied");
+                opt.Cookie = new CookieBuilder
+                {
+                    Name = "TestCookie", //Oluþturulacak Cookie'yi isimlendiriyoruz.
+                    HttpOnly = false, // Https serfikamýz varsa cookie saldýrý yapacak kullanýcýlar erþimesin diye koyduðumuz ayar.
+                };
+                opt.SlidingExpiration = true; //Expiration süresinin yarýsý kadar süre zarfýnda istekte bulunulursa eðer geri kalan yarýsýný tekrar sýfýrlayarak ilk ayarlanan süreyi tazeleyecektir.
+                                              // Rememberme false ise bu ayar geçerli olamaz, cookie kalýcý olarak oluþmalýdýr. Oturum süresince oluþmamalýdýr.
+                opt.ExpireTimeSpan = TimeSpan.FromDays(40); // 40 günlük 
+            });
+
 
             services.AddScoped<IPostRepository,PostRepository>();
             services.AddScoped<IPostCommentCountRepo, PostRepository>();
@@ -71,6 +91,7 @@ namespace NetCoreBlogEntires
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                //app.UseBrowserLink();
             }
             else
             {

@@ -31,13 +31,18 @@ namespace NetCoreBlogEntires.Data.Repositories
         }
 
 
+        /// <summary>
+        /// Admin panelinde tüm makaleleri görüp isActive olarak ayarlamayız ki son kullanıcı görsün
+        /// </summary>
+        /// <returns></returns>
         public override List<Post> List()
         {
             return _dbSet.Include(x => x.Comments).Include(x => x.Category).ToList();
         }
 
         /// <summary>
-        /// Gönderilen filtreye göre sayfalama yapar, filtere değerleri kategorisine göre, shortcontent title göre ve tagname göre
+        /// Gönderilen filtreye göre sayfalama yapar, filtere değerleri kategorisine göre, shortcontent title göre ve tagname göre.
+        /// Son kullanıcının sayfalı olarak gördüğü makaleler bu yüzden isactive olanları göstermeliyiz.
         /// </summary>
         /// <param name="filter"></param>
         /// <param name="currentPage"></param>
@@ -51,12 +56,16 @@ namespace NetCoreBlogEntires.Data.Repositories
                 throw new Exception("CurrentPage en düşük 1 olarak tanımlanabilir");
             }
 
-            
-
             return _dbSet.Where(filter).Include(x => x.Tags).Include(x => x.Comments).Include(x => x.Category).Skip((limit * (currentPage - 1))).Take(limit).AsQueryable();
 
         }
 
+        /// <summary>
+        /// Aktif olan tüm makalelerin sayısını getirir.
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <param name="limit"></param>
+        /// <returns></returns>
         public int GetTotalPageNumber(Expression<Func<Post, bool>> filter,int limit)
         {
             var totalCount = _dbSet.Where(filter).Count();
@@ -64,12 +73,17 @@ namespace NetCoreBlogEntires.Data.Repositories
             return (int)Math.Ceiling((decimal)totalCount / (decimal)limit); 
         }
 
+        /// <summary>
+        /// Aktif olan makalelerin comment sayısını getirmek için kullandık
+        /// </summary>
+        /// <param name="postId"></param>
+        /// <returns></returns>
         public int GetTotalCommentsCount(string postId)
         {
             // bir entity içerisine Include ile alt entitylere bağlandığımızda o entity'in alt kolleksiyonlarının hepsi rame çekilir.
             return _context.Posts
                 .Include(x => x.Comments)
-                .FirstOrDefault(x => x.Id == postId)
+                .FirstOrDefault(x => x.Id == postId && x.IsActive)
                 .Comments
                 .Count();
         }

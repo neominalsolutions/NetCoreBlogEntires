@@ -15,7 +15,7 @@
             <th scope="col">Yazar</th>
             <th scope="col">Yorum Sayısı</th>
             <th scope="col">Yayın Tarihi</th>
-            <th scope="col">İşlemler</th>
+            <th colspan="2" scope="col">İşlemler</th>
         </tr>
     </thead>
     <tbody>
@@ -31,6 +31,21 @@
             <td>@item.CommentCount</td>
             <td>@item.PublishDate</td>
             <td>
+                <label class="switch">
+                    @if (item.IsActive)
+                    {
+                        <input type="checkbox" checked onchange="toggle(event, '@item.Id')">
+                        <span class="slider round"></span>
+                    }
+                    else
+                    {
+                        <input type="checkbox" onchange="toggle(event,'@item.Id')">
+                        <span class="slider round"></span>
+                    }
+
+                </label>
+            </td>
+            <td>
                 <a asp-area="Admin" asp-controller="Post" asp-action="Detail" asp-route-id="@item.Id">Detay</a>
             </td>
            
@@ -38,5 +53,48 @@
         }
 
 
+
+
     </tbody>
 </table>
+
+
+@section Scripts {
+
+    <script>
+        const toggle = (event, postId) => {
+            const checked = event.target.checked;
+
+            console.log('berkay7', checked);
+
+            const param = {
+                id: postId,
+                isActive: checked
+            };
+
+
+            // ajax ile post
+
+            $.ajax({
+                method: 'POST',
+                url: '/Admin/Post/ChangeStatus/',
+                contentType: 'application/json',
+                data: JSON.stringify(param),
+                success: function (response) {
+
+                    if (response.isActive) {
+                        alert('Makale görünür oldu')
+                    } else {
+                        alert('Makale kaldırıldı')
+                    }
+                   
+                },
+                error: function (err) {
+
+                }
+               
+            })
+        }
+    </script>
+
+}

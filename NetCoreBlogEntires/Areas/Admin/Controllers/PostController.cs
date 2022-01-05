@@ -41,6 +41,7 @@ namespace NetCoreBlogEntires.Areas.Admin.Controllers
         {
             var model = _postRepository.List().Select(a=> new PostViewModel
             {
+                IsActive = a.IsActive,
                 Title = a.Title,
                 Id = a.Id,
                 CategoryName = a.Category.Name,
@@ -101,6 +102,16 @@ namespace NetCoreBlogEntires.Areas.Admin.Controllers
 
 
             return NotFound();
+        }
+
+        [HttpPost]
+        public JsonResult ChangeStatus([FromBody] PostChangeStatusInputModel model)
+        {
+            var post = _postRepository.Find(model.Id);
+            post.SetPostStatus(model.IsActive);
+            _postRepository.Save();
+
+            return Json(model);
         }
 
     }
