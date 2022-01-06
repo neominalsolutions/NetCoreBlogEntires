@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewData["Title"] = "IndexMvcGrid";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@model IQueryable<PostViewModel>
+
+
+@(Html
+    .Grid(Model)
+    .Build(columns =>
+    {
+        columns.Add(model => Html.CheckBox("Check_" + model.Id)).Titled(Html.CheckBox("CheckAll"));
+        columns.Add().RenderedAs((model, row) => row + 1).Titled("#").Css("text-center");
+        // sıra numarısı için var
+        columns.Add(model => model.Title).Titled("Title");
+        columns.Add(model => model.ShortContent).Titled("ShortContent");
+        columns.Add(model => model.PublishDate).Titled("PublishDate")
+    .Formatted("{0: MM/dd/yyyy}");
+        columns.Add(model => model.IsActive).Filterable(GridFilterType.Multi).Titled("Makale Aktiflik Durumu");
+    }).Using(GridFilterMode.Row).Empty("kayıt bulunamadı").Filterable(GridFilterCase.Original).Sortable().Pageable(pager =>
+    {
+        pager.PageSizes = new Dictionary<Int32, String> { { 5, "5" }, { 10, "10" }, { 20, "20" }, { 30, "30" }, { 40, "40" }, { 50, "50" }, { 100, "100" } };
+        pager.ShowPageSizes = true;
+        pager.PagesToDisplay = 3;
+        pager.CurrentPage = 1;
+
+    })
+
+// GridFilterCase.Lower harf duyarsız olsun
+)
+
+
+
+
+
+

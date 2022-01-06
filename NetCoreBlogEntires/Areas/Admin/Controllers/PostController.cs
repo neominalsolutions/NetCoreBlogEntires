@@ -47,10 +47,29 @@ namespace NetCoreBlogEntires.Areas.Admin.Controllers
                 CategoryName = a.Category.Name,
                 AuthorName = a.AuthorName,
                 CommentCount = a.Comments.Count(),
-                PublishDate = a.PublishDate.ToShortDateString(),
+                PublishDate = a.PublishDate,
                 ShortContent = a.ShortContent
             }
             ).ToList();
+
+            return View(model);
+        }
+
+
+        public IActionResult IndexMvcGrid()
+        {
+            var model = _postRepository.List().Select(a => new PostViewModel
+            {
+                IsActive = a.IsActive,
+                Title = a.Title,
+                Id = a.Id,
+                CategoryName = a.Category.Name,
+                AuthorName = a.AuthorName,
+                CommentCount = a.Comments.Count(),
+                PublishDate = a.PublishDate,
+                ShortContent = a.ShortContent
+            }
+             ).AsQueryable();
 
             return View(model);
         }

@@ -17,7 +17,7 @@ namespace NetCoreBlogEntires.Areas.Admin.Models
 
         public string CategoryName { get; set; }
 
-        public string PublishDate { get; set; }
+        public DateTime PublishDate { get; set; }
 
         public bool IsActive { get; set; }
 
