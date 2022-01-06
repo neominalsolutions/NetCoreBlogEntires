@@ -40,7 +40,6 @@ namespace NetCoreBlogEntires.Areas.Admin.Controllers
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
 
-            var emailConfirmed = await _signManager.CanSignInAsync(user);
 
             if(user != null)
             {
