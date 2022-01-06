@@ -100,7 +100,7 @@ namespace NetCoreBlogEntires.Controllers
             foreach (var item in categories)
             {
                 // kategorisi göre post sorgusu, last po
-                var lastPostQuery = _postRepository.Where(x => x.CategoryId == item.Id);
+                var lastPostQuery = _postRepository.Where(x => x.CategoryId == item.Id && x.IsActive);
 
                 // bu kategoriye ait postların sayısı
                 var categorypostCount = lastPostQuery.Count();

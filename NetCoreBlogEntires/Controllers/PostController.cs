@@ -40,17 +40,17 @@ namespace NetCoreBlogEntires.Controllers
 
             if (!string.IsNullOrEmpty(searchText))
             {
-                queryFilter = x => EF.Functions.Like(x.Title, $"%{searchText}%") || EF.Functions.Like(x.ShortContent, $"%{searchText}%");
+                queryFilter = x => EF.Functions.Like(x.Title, $"%{searchText}%") || EF.Functions.Like(x.ShortContent, $"%{searchText}%") && x.IsActive;
             }
 
             if(!string.IsNullOrEmpty(categoryId))
             {
-                queryFilter = x => x.CategoryId == categoryId;
+                queryFilter = x => x.CategoryId == categoryId && x.IsActive;
             }
 
             if(!string.IsNullOrEmpty(tagName))
             {
-                queryFilter = x => x.Tags.Select(a=> a.Name).Contains(tagName);
+                queryFilter = x => x.Tags.Select(a=> a.Name).Contains(tagName) && x.IsActive;
             }
 
 
@@ -58,7 +58,7 @@ namespace NetCoreBlogEntires.Controllers
             var model = new PostListViewModel
             {
 
-                PostItems = _postRepository.GetPagedPosts(queryFilter, currentPage,4).Where(x=> x.IsActive).Select(a => new PostItemViewModel
+                PostItems = _postRepository.GetPagedPosts(queryFilter, currentPage,4).Select(a => new PostItemViewModel
                 {
                     AuthorName = a.AuthorName,
                     CategoryId = a.CategoryId,
