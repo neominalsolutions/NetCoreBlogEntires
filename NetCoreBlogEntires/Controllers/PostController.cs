@@ -35,7 +35,7 @@ namespace NetCoreBlogEntires.Controllers
 
       
 
-            Expression<Func<Post, bool>> queryFilter = x => true;
+            Expression<Func<Post, bool>> queryFilter = x => x.IsActive;
           
 
             if (!string.IsNullOrEmpty(searchText))
