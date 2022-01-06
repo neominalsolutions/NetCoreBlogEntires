@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace NetCoreBlogEntires.Data.Contexts
 {
-    public class AppDbContext: DbContext
+    public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> opt):base(opt)
+        public AppDbContext(DbContextOptions<AppDbContext> opt) : base(opt)
         {
 
         }
@@ -17,6 +17,25 @@ namespace NetCoreBlogEntires.Data.Contexts
         public DbSet<Category> Categories { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Tag> Tags { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Post>()
+            .HasMany(x => x.Comments)
+            .WithOne()
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
+
+            base.OnModelCreating(modelBuilder);
+        }
+
+        public override int SaveChanges()
+        {
+
+
+
+            return base.SaveChanges();
+        }
 
 
         // Commentlere direk ulşmak istemiyoruz zaten bir anlı yok bu sebeple PostRepository de Include ile çekmemiz lazım

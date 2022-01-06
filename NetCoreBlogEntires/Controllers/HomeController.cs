@@ -7,10 +7,13 @@ using NetCoreBlogEntires.Data.Repositories;
 using NetCoreBlogEntires.Models;
 using NetCoreBlogEntires.Services;
 using NetCoreBlogEntires.Validators;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace NetCoreBlogEntires.Controllers
@@ -39,14 +42,41 @@ namespace NetCoreBlogEntires.Controllers
         [HttpGet]
         public IActionResult Contact()
         {
+
+
+            var post = _postRepository.Find("2705ea3b-cb82-4c5a-8cd5-5fca208a25cf");
+            //post.AddComment(new Comment("me", "comment1"));
+
+            var comment = post.Comments.FirstOrDefault(x => x.Id == "59466430-46bb-41c2-badc-3a9e1aba67b5");
+            post.RemoveComment(comment);
+            _postRepository.Save();
+
+
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Contact(ContactInputModel model)
         {
+
+            var captchaImage = HttpContext.Request.Form["g-recaptcha-response"];
+
+            if (string.IsNullOrEmpty(captchaImage))
+            {
+                ModelState.AddModelError("captcha", "Captcha doğrulanmamış");
+                return View();
+            }
+
+            var verified = await CheckCaptcha();
+            if (!verified)
+            {
+                ModelState.AddModelError("captcha", "Captcha yanlış doğrulanmış");
+                return View();
+            }
+
+
             // valid olup olmadığını Validate methodu ile kontrol ederiz.
-           var result =  _contactInputModelValidator.Validate(model);
+            var result =  _contactInputModelValidator.Validate(model);
 
             if (result.IsValid)
             {
@@ -58,6 +88,24 @@ namespace NetCoreBlogEntires.Controllers
             }
 
             return View();
+        }
+
+
+        private async Task<bool> CheckCaptcha()
+        {
+            var postData = new List<KeyValuePair<string, string>>()
+    {
+        new KeyValuePair<string, string>("secret", "6Ld29gYUAAAAAMAOFcvyxvqKHgbHBIwhZ694wOs0"),
+        new KeyValuePair<string, string>("remoteip", HttpContext.Connection.RemoteIpAddress.ToString()),
+        new KeyValuePair<string, string>("response", HttpContext.Request.Form["g-recaptcha-response"])
+    };
+
+            var client = new HttpClient();
+            var response = await client.PostAsync("6Le47fUdAAAAAJ2tYH7I4Y3SvJgnQh9IlUa0VrjV", new FormUrlEncodedContent(postData));
+
+            var o = (JObject)JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+
+            return (bool)o["success"];
         }
 
         public IActionResult Index()

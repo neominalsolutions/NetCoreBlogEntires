@@ -36,6 +36,7 @@ namespace NetCoreBlogEntires.Data.Repositories
         {
             var entity = Find(Id);
             _dbSet.Remove(entity);
+     
         }
 
         public virtual TEntity Find(string Id)

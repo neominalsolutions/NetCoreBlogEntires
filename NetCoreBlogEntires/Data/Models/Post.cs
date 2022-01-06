@@ -151,5 +151,11 @@ namespace NetCoreBlogEntires.Data.Models
             PublishDate = DateTime.Now;
         }
 
+
+        public void RemoveComment(Comment comment)
+        {
+            _comments.Remove(comment);
+        }
+
     }
 }
