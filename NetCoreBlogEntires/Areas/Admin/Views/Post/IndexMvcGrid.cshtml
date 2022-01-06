@@ -17,9 +17,9 @@
         columns.Add(model => model.Title).Titled("Title");
         columns.Add(model => model.ShortContent).Titled("ShortContent");
         columns.Add(model => model.PublishDate).Titled("PublishDate")
-    .Formatted("{0: MM/dd/yyyy}");
-        columns.Add(model => model.IsActive).Filterable(GridFilterType.Multi).Titled("Makale Aktiflik Durumu");
-    }).Using(GridFilterMode.Row).Empty("kayıt bulunamadı").Filterable(GridFilterCase.Original).Sortable().Pageable(pager =>
+    .Formatted("{0: MM/dd/yyyy}").Sortable(true);
+        columns.Add(model => model.IsActive).Titled("IsActive").Sortable(false);
+    }).Using(GridFilterMode.Row).Empty("kayıt bulunamadı").Filterable(GridFilterCase.Original).Pageable(pager =>
     {
         pager.PageSizes = new Dictionary<Int32, String> { { 5, "5" }, { 10, "10" }, { 20, "20" }, { 30, "30" }, { 40, "40" }, { 50, "50" }, { 100, "100" } };
         pager.ShowPageSizes = true;

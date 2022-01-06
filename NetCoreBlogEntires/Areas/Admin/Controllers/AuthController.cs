@@ -40,9 +40,13 @@ namespace NetCoreBlogEntires.Areas.Admin.Controllers
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
 
+            var emailConfirmed = await _signManager.CanSignInAsync(user);
+
             if(user != null)
             {
-                await _signManager.SignInAsync(user, model.RememberMe, null);
+                // email confirmed olup olmasını kontrol eder. 
+                // signInManager signInAsync bu kontrolü yapmaz.
+                await _signManager.PasswordSignInAsync(user,model.Password, model.RememberMe,false);
 
                 return Redirect("/Admin");
             }

@@ -52,7 +52,11 @@ namespace NetCoreBlogEntires
             });
 
 
-            services.AddIdentity<ApplicationUser, ApplicationRole>().AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
+            services.AddIdentity<ApplicationUser, ApplicationRole>(opt => {
+                // db de False alaný false olanlar login olamaz
+                opt.SignIn.RequireConfirmedEmail = true;
+                
+            }).AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
 
             // uygulamaya identity ile birlikte kimlik doðrulama servisi ekleriz
             services.AddAuthentication();
