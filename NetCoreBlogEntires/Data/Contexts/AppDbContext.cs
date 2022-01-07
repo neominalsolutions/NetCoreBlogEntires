@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NetCoreBlogEntires.Data.Configurations;
 using NetCoreBlogEntires.Data.Models;
 using System;
 using System.Collections.Generic;
@@ -20,11 +21,7 @@ namespace NetCoreBlogEntires.Data.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Post>()
-            .HasMany(x => x.Comments)
-            .WithOne()
-            .IsRequired()
-            .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.ApplyConfiguration(new PostConfugurations());
 
             base.OnModelCreating(modelBuilder);
         }

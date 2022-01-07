@@ -55,6 +55,7 @@ namespace NetCoreBlogEntires
             services.AddIdentity<ApplicationUser, ApplicationRole>(opt => {
                 // db de False alaný false olanlar login olamaz
                 opt.SignIn.RequireConfirmedEmail = true;
+                opt.User.RequireUniqueEmail = true;
                 
             }).AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
 
