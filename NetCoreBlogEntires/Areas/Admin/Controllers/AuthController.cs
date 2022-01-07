@@ -39,9 +39,10 @@ namespace NetCoreBlogEntires.Areas.Admin.Controllers
         public async Task<IActionResult> Login(LoginInputModel model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
+            var checkPassword = await _userManager.CheckPasswordAsync(user, model.Password);
 
 
-            if(user != null)
+            if(user != null && checkPassword)
             {
                 // email confirmed olup olmasını kontrol eder. 
                 // signInManager signInAsync bu kontrolü yapmaz.
