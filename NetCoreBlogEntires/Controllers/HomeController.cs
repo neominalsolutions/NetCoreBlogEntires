@@ -59,6 +59,9 @@ namespace NetCoreBlogEntires.Controllers
         public async Task<IActionResult> Contact(ContactInputModel model)
         {
 
+            //  https://www.google.com/recaptcha/admin#list
+            // recaptche admin list
+
             var captchaImage = HttpContext.Request.Form["g-recaptcha-response"];
 
             if (string.IsNullOrEmpty(captchaImage))
@@ -94,14 +97,14 @@ namespace NetCoreBlogEntires.Controllers
         private async Task<bool> CheckCaptcha()
         {
             var postData = new List<KeyValuePair<string, string>>()
-    {
-        new KeyValuePair<string, string>("secret", "6Ld29gYUAAAAAMAOFcvyxvqKHgbHBIwhZ694wOs0"),
-        new KeyValuePair<string, string>("remoteip", HttpContext.Connection.RemoteIpAddress.ToString()),
-        new KeyValuePair<string, string>("response", HttpContext.Request.Form["g-recaptcha-response"])
-    };
+            {
+                new KeyValuePair<string, string>("secret", "6Ldj7vgdAAAAAIAQv1bzjel_jPHD0TtQOBB9XFBd"),
+                new KeyValuePair<string, string>("remoteip", HttpContext.Connection.RemoteIpAddress.ToString()),
+                new KeyValuePair<string, string>("response", HttpContext.Request.Form["g-recaptcha-response"])
+            };
 
             var client = new HttpClient();
-            var response = await client.PostAsync("6Le47fUdAAAAAJ2tYH7I4Y3SvJgnQh9IlUa0VrjV", new FormUrlEncodedContent(postData));
+            var response = await client.PostAsync("https://www.google.com/recaptcha/api/siteverify", new FormUrlEncodedContent(postData));
 
             var o = (JObject)JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
 
