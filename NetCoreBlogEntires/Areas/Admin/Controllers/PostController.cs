@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace NetCoreBlogEntires.Areas.Admin.Controllers
 {
-    [Area("Admin")][Authorize("Admin,Editor")]
+    [Area("Admin")][Authorize(Roles ="Admin, Editör")]
     public class PostController : Controller
     {
         private readonly ICategoryRepository _categoryRepository;
